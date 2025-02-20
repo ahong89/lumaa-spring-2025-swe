@@ -1,0 +1,56 @@
+.TasksPage {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.LogoutButton {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.TasksContainer {
+  width: 50%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.TasksHeader {
+  width: fit-content;
+  height: fit-content;
+  align-text: center;
+}
+
+.TasksList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.TaskContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.RemoveTaskButton {
+  position: absolute;
+  right: 10px;
+}
+
+.SubmitNewTask {
+  position: absolute;
+  right: 15px;
+}

@@ -4,7 +4,10 @@ import { Sequelize, Model, DataTypes } from 'sequelize';
 const dotenv = require('dotenv');
 dotenv.config();
 
-const postgres_url: string = "postgres://postgres:psqlpassword@localhost:5432/task_db";
+const postgres_url: string | undefined = process.env.DB_URL;
+if(postgres_url == undefined) {
+  throw new Error("DB_URL in .env is not defined");
+}
 const sequelize = new Sequelize(postgres_url);
 
 // Define a User model
@@ -40,7 +43,7 @@ User.init(
   },
   {
     sequelize,
-    modelName: 'User',
+    modelName: 'user',
   }
 );
 
@@ -61,21 +64,15 @@ Task.init(
     isComplete: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    }
+    } 
   },
   {
     sequelize,
-    modelName: 'Task',
+    modelName: 'task',
   }
 )
 
-User.hasMany(Task, {
-  foreignKey: 'userId'
-})
-Task.belongsTo(User)
+User.hasMany(Task);
+Task.belongsTo(User);
 
 export default sequelize;

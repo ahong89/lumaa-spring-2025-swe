@@ -1,20 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import { jwtDecode } from "jwt-decode";
+import { type JwtPayload } from "jwt-decode";
+import axios from '../axios';
+import { type AxiosError } from "axios";
 
 import './Login.css';
 
 function Login() {
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
-  function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
+  useEffect(() => {
+    const savedToken: string | null = localStorage.getItem('accessToken');
+    if(savedToken) {
+      const decoded: JwtPayload = jwtDecode<JwtPayload>(savedToken);
+      if(decoded.exp && decoded.exp > Math.floor(Date.now() / 1000)) {
+        navigate("/tasks");
+        return;
+      }
+    }
+    navigate("/login");
+  }, [navigate])
 
-    console.log(`Logging in now with ${email} and ${password}`);
-    navigate("/tasks");
+  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const { data } = await axios.post(`/auth/login`, {
+        username: username,
+        password: password,
+      });
+      console.log(`data: ${data}`);
+      localStorage.setItem("accessToken", data.token);
+      navigate("/tasks");
+    } catch(error) {
+      const axiosError = error as AxiosError<{ error: string }>;
+      setError(axiosError.response?.data?.error || "An unknown error occured");
+      console.log(error);
+    } 
   }
 
   return (
@@ -23,11 +48,11 @@ function Login() {
         <h1 className="LoginHeader">Login</h1>
         <form className="LoginForm" onSubmit={handleLogin}>
           <div className="EmailContainer">
-            <label>Email:</label>
+            <label>Username:</label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
@@ -41,6 +66,7 @@ function Login() {
             />
           </div>
           <button className="LoginButton" type="submit">Login!</button>
+          {error && <p>Error: {error}</p>}
         </form>
         <div className="SignupRouteContainer">
           <p>Don't have an account?</p>

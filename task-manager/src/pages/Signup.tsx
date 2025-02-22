@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import { type AxiosError } from "axios";
+import axios from '../axios';
 
 import './Signup.css';
 
 function Signup() {
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
-  function handleSignup(e: React.FormEvent) {
-    e.preventDefault();
-
-    console.log(`Logging in now with ${email} and ${password}`);
-    navigate("/tasks");
+  async function handleSignup(event: React.FormEvent) {
+    event.preventDefault();
+    try {
+      await axios.post(`/auth/register`, {
+        username: username,
+        password: password,
+      });
+      navigate("/login");
+    } catch(error) {
+      const axiosError = error as AxiosError<{ error: string }>;
+      setError(axiosError.response?.data?.error || "An unknown error occured");
+      console.log(error);
+    }
   }
 
   return (
@@ -23,11 +32,11 @@ function Signup() {
         <h1 className="SignupHeader">Signup</h1>
         <form className="SignupForm" onSubmit={handleSignup}>
           <div className="EmailContainer">
-            <label>Email:</label>
+            <label>Username:</label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
@@ -40,6 +49,7 @@ function Signup() {
               required
             />
           </div>
+          {error && <p>Error: {error}</p>}
           <button className="SignupButton" type="submit">Signup!</button> 
         </form>
         <div className="LoginRouteContainer">

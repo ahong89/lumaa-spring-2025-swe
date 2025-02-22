@@ -19,6 +19,7 @@ function Tasks() {
   const [currTaskId, setCurrTaskId] = useState<number>(0);
 
   function logout() {
+    localStorage.removeItem('accessToken');
     navigate('/login');
   }
   
@@ -26,7 +27,7 @@ function Tasks() {
     const currTaskId: number = parseInt(event.target.id);
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id == currTaskId ? {...task, isComplete: event.target.checked} : task
+        task.id === currTaskId ? {...task, isComplete: event.target.checked} : task
       )
     )
   }

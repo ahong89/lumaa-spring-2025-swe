@@ -6,11 +6,9 @@
 
 ## Steps to set up the database (migrations, environment variables)
 1. Create a postgres database locally
-- Open psql shell
+- Open psql shell 
 - run: ```CREATE DATABASE DB_NAME;``` (DB_NAME can be whatever db name)
-2. Configure new user for database
-- Access created database using ```psql -U your_admin_username -d your_database_name``` (admin username most likely postgres)
-3. Configure .env
+2. Configure .env
 - Backend .env (/backend/.env) should look like (substitute the username, password and created db name)
 Note that the value of JWT_SECRET is not important for the purposes of testing
 You can either configure creating a user or can use the admin username and password
@@ -28,11 +26,11 @@ REACT_APP_API_URL=http://localhost:5000
 This app was developed using bun, however using npm will be fine for the purposes of testing,
 these instructions will assume that npm is being used
 1. In the backend folder, run ```npm install```
-2. Run npm run start
+2. Run ```npm run start```
 
 ## How to run the frontend
-1. In task-manager/ folder, run npm install
-2. Run npm start
+1. In task-manager/ folder, run ```npm install```
+2. Run ```npm start```
 
 ## Notes on testing
 1. You will originally get directed to the /login page however sign up is necessary for accessing the page

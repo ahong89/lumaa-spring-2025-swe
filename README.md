@@ -10,8 +10,8 @@
 - run: ```CREATE DATABASE DB_NAME;``` (DB_NAME can be whatever db name)
 2. Configure .env
 - Backend .env (/backend/.env) should look like (substitute the username, password and created db name)
-Note that the value of JWT_SECRET is not important for the purposes of testing
-You can either configure creating a user or can use the admin username and password
+Note that the value of JWT_SECRET is not important for the purposes of testing.
+You can either configure creating a user or can use the admin username and password.
 ```
 DB_URL="postgres://<DB_USERNAME>:<DB_PASSWORD>@localhost:5432/<DB_NAME>"
 JWT_SECRET=RANDOMSTRINGFORJWT

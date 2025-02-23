@@ -38,6 +38,7 @@ taskRouter.post('/tasks', verifyToken, async (req: Request, res: Response) => {
     });
     res.status(200).json({"message": "task successfully added"});
   } catch(error) {
+    console.log(error);
     res.status(500).json({"error": "adding task failed due to server error"});
   }
 })

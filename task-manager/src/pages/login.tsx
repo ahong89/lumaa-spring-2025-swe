@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { type JwtPayload } from "jwt-decode";
-import axios from '../axios';
-import { type AxiosError } from "axios";
 
-import './Login.css';
+import './login.css';
+import { loginAPI } from '../api/auth'
 
 function Login() {
   const [username, setUsername] = useState<string>("");
@@ -27,19 +26,12 @@ function Login() {
 
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    try {
-      const { data } = await axios.post(`/auth/login`, {
-        username: username,
-        password: password,
-      });
-      console.log(`data: ${data}`);
-      localStorage.setItem("accessToken", data.token);
+    const response = await loginAPI(username, password);
+    if(response?.status == 200) {
       navigate("/tasks");
-    } catch(error) {
-      const axiosError = error as AxiosError<{ error: string }>;
-      setError(axiosError.response?.data?.error || "An unknown error occured");
-      console.log(error);
-    } 
+    } else {
+      setError(response?.data?.error || "Unknown Error");
+    }
   }
 
   return (

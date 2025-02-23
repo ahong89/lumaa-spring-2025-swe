@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { type AxiosError } from "axios";
-import axios from '../axios';
 
-import './Signup.css';
+import './signup.css';
+import { signupAPI } from '../api/auth';
 
 function Signup() {
   const [username, setUsername] = useState<string>("");
@@ -13,16 +12,11 @@ function Signup() {
 
   async function handleSignup(event: React.FormEvent) {
     event.preventDefault();
-    try {
-      await axios.post(`/auth/register`, {
-        username: username,
-        password: password,
-      });
+    const response = await signupAPI(username, password);
+    if(response?.status == 200) {
       navigate("/login");
-    } catch(error) {
-      const axiosError = error as AxiosError<{ error: string }>;
-      setError(axiosError.response?.data?.error || "An unknown error occured");
-      console.log(error);
+    } else {
+      setError(response?.data?.error || "Unknown Error has occured");
     }
   }
 

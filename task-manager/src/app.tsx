@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
-import Signup from "./pages/Signup"
-import Login from "./pages/Login"
-import Tasks from "./pages/Tasks"
+import Signup from "./pages/signup"
+import Login from "./pages/login"
+import Tasks from "./pages/tasks"
 
-import './App.css';
+import './app.css';
 
 function App() {
   return (

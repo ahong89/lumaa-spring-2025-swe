@@ -15,10 +15,9 @@ export async function fetchTasksAPI(jwt: string) {
   }
 }
 
-export async function addTaskAPI(jwt: string, taskId: number, title: string, description: string, isComplete: boolean) {
+export async function addTaskAPI(jwt: string, title: string, description: string, isComplete: boolean) {
   try {
     const response = await axios.post("/tasks", {
-        id: taskId,
         title: title,
         description: description,
         isComplete: isComplete,

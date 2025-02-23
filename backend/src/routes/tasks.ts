@@ -17,7 +17,14 @@ taskRouter.get('/tasks', verifyToken, async (req: Request, res: Response) => {
     }
 
     // get tasks
-    const userTasks = await Task.findAll({where: {userId: userId}});
+    const userTasks = await Task.findAll({
+      where: {
+        userId: userId,
+      },
+      order: [
+        ['id', 'ASC'],
+      ]
+    });
     res.status(200).json({"tasks": userTasks});
   } catch(error) {
     console.log(error);
@@ -27,16 +34,15 @@ taskRouter.get('/tasks', verifyToken, async (req: Request, res: Response) => {
 
 taskRouter.post('/tasks', verifyToken, async (req: Request, res: Response) => {
   const userId = (req as ExtendedRequest).token.userId;
-  const {id, title, description, isComplete} = req.body;
+  const {title, description, isComplete} = req.body;
   try {
-    await Task.create({
-      id: id,
+    const task = await Task.create({
       title: title,
       description: description,
       isComplete: isComplete,
       userId: userId,
     });
-    res.status(200).json({"message": "task successfully added"});
+    res.status(200).json({"message": "task successfully added", "id": task.id});
   } catch(error) {
     console.log(error);
     res.status(500).json({"error": "adding task failed due to server error"});

@@ -18,7 +18,6 @@ function Tasks() {
 
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [newTaskDescription, setNewTaskDescription] = useState<string>("");
-  const [currTaskId, setCurrTaskId] = useState<number>(0);
 
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [editTaskId, setEditTaskId] = useState<number>(0);
@@ -57,12 +56,12 @@ function Tasks() {
     )
   }
 
-  function addNewTask() {
-    addTaskAPI(jwtToken, currTaskId+1, newTaskTitle, newTaskDescription, false);
+  async function addNewTask() {
+    const response = await addTaskAPI(jwtToken, newTaskTitle, newTaskDescription, false);
     setTasks((prevTasks) => [
       ...prevTasks,
       {
-        id: currTaskId+1,
+        id: response?.data?.id,
         title: newTaskTitle,
         description: newTaskDescription,
         isComplete: false
@@ -70,7 +69,6 @@ function Tasks() {
     ])
     setNewTaskTitle("");
     setNewTaskDescription("");
-    setCurrTaskId((prev) => prev+1);
   }
 
   function openTaskModal(taskId: number) {

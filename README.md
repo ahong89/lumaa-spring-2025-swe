@@ -35,6 +35,7 @@ these instructions will assume that npm is being used
 ## Notes on testing
 1. You will originally get directed to the /login page however sign up is necessary for accessing the page
 2. The database gets migrated on run so the schema will get set up automatically
+- Check out video demo here! -> https://youtu.be/zIpmxJvw02A
 
 ## Salary expectations per month
 $30/hr x 40hours/week -> $4,800 a month (would rather discuss salary expectations over call !)
